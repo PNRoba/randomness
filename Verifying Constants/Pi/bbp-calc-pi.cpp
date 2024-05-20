@@ -1,3 +1,12 @@
+// Programme: BBP pi fragment generation
+/* Description:
+*    programme for generating pi hexadecimal fragments using BBP
+*    and using GMP library to be able to generate fragments with
+*    higher precision than default.
+*
+*    Algorithm based on: https://www.researchgate.net/publication/228702113_The_BBP_Algorithm_for_Pi
+*/
+
 #include <iostream>
 #include <fstream>
 #include <gmpxx.h>
@@ -6,6 +15,7 @@
 #include <vector>
 #include <iomanip>
 
+// Exponentiation by Squaring
 void mpf_pow(mpf_t &result, mpz_t base, mpz_t pow){
     mpz_t res;
     mpz_init(res);
@@ -32,8 +42,10 @@ void mpf_pow(mpf_t &result, mpz_t base, mpz_t pow){
     mpz_clear(res);
 }
 
+// Function based on code from https://www.researchgate.net/publication/228702113_The_BBP_Algorithm_for_Pi
+// Modified to use GMP library
+// Calculates: expm = 16^p mod ak.
 void expm(mpf_t result, mpf_t p, mpf_t ak) {
-
     if (mpf_cmp_d(ak, 1.0)==0) {
         mpf_set_d(result, 0.0);
     }
@@ -126,7 +138,7 @@ void expm(mpf_t result, mpf_t p, mpf_t ak) {
     mpz_clear(tp1);
 }
 
-
+// Calculation of S_j numbers
 mpf_class S_j(int j, char *d, const std::chrono::time_point<std::chrono::system_clock>& startTime, std::string name, const std::string file_path) {
     // mpf_set_default_prec(128);
     mpf_t sum1, sum2, num;
@@ -259,12 +271,13 @@ mpf_class S_j(int j, char *d, const std::chrono::time_point<std::chrono::system_
 
 void main_function() {
     auto startTime = std::chrono::system_clock::now();
-    mpf_set_default_prec(128);
+    mpf_set_default_prec(128); // calculation precision
     std::cout << std::setprecision(50);
     // std::cout << "precision: " << mpf_get_default_prec() << std::endl;
 
     std::string path = "C:\\path\\";
 
+    // index of positions for each fragment
     std::vector<std::string> arr = 
     {
         // "50",
@@ -297,6 +310,7 @@ void main_function() {
 
         mpf_init_set(S4, S_j(6, n, startTime, "S4", path).get_mpf_t());
 
+        // calculating result number from BBP formula using S_j numbers
         mpf_t result;
         mpf_init(result);
 
@@ -314,6 +328,8 @@ void main_function() {
 
         std::cout << "Result: " << result << " " << mpf_get_prec(result) << std::endl;
 
+        // Get hexadecimal string from the result as described in:
+        // Algorithm based on: https://www.researchgate.net/publication/228702113_The_BBP_Algorithm_for_Pi
         mpf_t turnc;
         mpf_init(turnc);
         mpf_trunc(turnc, result);
@@ -325,11 +341,13 @@ void main_function() {
         mpf_get_str (hexy, &expptr, 16, 0, result);
 
         std::cout << "Result: " << hexy << " " << std::endl;
-        
+
+        // Print execution time
         auto now = std::chrono::system_clock::now();
         std::chrono::duration<double> elapsed_seconds = now - startTime;
         std::cout << "Result: [" << elapsed_seconds.count() << "]"<< std::endl;
 
+        // Save result
         std::ofstream file(path + "1-test-n" + a + "-result.txt");
         file << std::setprecision(129) << result << std::endl;
         file << hexy << std::endl;
