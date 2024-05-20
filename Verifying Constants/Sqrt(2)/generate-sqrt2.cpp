@@ -1,3 +1,8 @@
+// Programme: Sqrt(2) generation
+/* Description:
+*    Sqrt(2) generation using Newton-Raphson method
+*/
+
 #include <iostream>
 #include <cmath>
 #include <limits>
@@ -45,7 +50,7 @@ void sqrtWithPrecision(mpf_t x, int precision, const std::chrono::time_point<std
         // prevGuess = guess;
         mpf_set(prevGuess, guess);
         mpf_set(prevCmpr, cmpr);
-        // guess = (guess + x / guess) / 2.0; // Newton-Raphson formula
+        // guess = (guess + x / guess) / 2.0;
         mpf_t(temp);
         mpf_init(temp);
         mpf_div(temp, x, guess);
@@ -86,7 +91,7 @@ int main() {
     mpf_init_set_ui(number, 2);
 
     int precision = 1000; // Set the desired precision here
-    mpf_set_default_prec(precision*4);
+    mpf_set_default_prec(precision*4); // set bit precision
     std::cout << std::setprecision(precision+1);
     sqrtWithPrecision(number, precision, startTime);
 
