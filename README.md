@@ -1,5 +1,13 @@
 # randomness
-
+<br />
+Data used:
+<br />
+Various Mathematical Constants to 1 Billion Digits: https://archive.org/details/Math_Constants
+<br />
+PI 10 Billion: https://jackgiffin.com/main/pi_10_billion/
+<br />
+Generated Delta sequences from formula.py:
+<br />
 Delta Sequences data: https://archive.org/details/pi-1-1000
 <br />
 Code files:<br />
