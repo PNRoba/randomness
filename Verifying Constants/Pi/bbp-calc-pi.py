@@ -1,6 +1,13 @@
+# Programme: BBP pi fragment generation
+# Description:
+# Generates S_j numbers from BBP formula
+# then using BBP formula calculate a number
+# which then is used to calculate pi fragment in hexadecimal
+#
+# Improved and optimised programme in C++ -> bbp-calc-pi.cpp
+
 import gmpy2
 from datetime import datetime
-
 
 # Save an mpfr object to a text file
 def save_mpfr_object(file_path, mpfr_object):
@@ -19,7 +26,7 @@ def load_mpfr_objects(file_path):
             mpfr_objects.append(mpfr_obj)
     return mpfr_objects
 
-
+# Function generating S_j for BBP formula
 def S_j(j, d, startTime):
     gmpy2.get_context().precision = 128
     sum1 = gmpy2.mpfr(0)
@@ -44,8 +51,10 @@ def S_j(j, d, startTime):
 
 
 def main():
+    # Start time for determining execution time
     startTime = datetime.now()
 
+    # Set number precision to 128 bits
     gmpy2.get_context().precision = 128
 
     arr = [  # 0,
@@ -59,6 +68,7 @@ def main():
         # 1000000000,
         # 10000000000]
 
+    # For each index calculate S_j for respective fragment at that index
     for n in arr:
         print("--- Computing n: " + str(n))
         S1 = S_j(1, n, startTime)
