@@ -1,3 +1,8 @@
+// Programme: Convert to hexadecimal
+/* Description:
+*    Convert pi digit string to hexadecimal
+*/
+
 #include <iostream>
 #include <fstream>
 #include <gmpxx.h>
@@ -13,7 +18,7 @@ int main() {
     std::ofstream file2("pi-result-hex2.txt", std::ios::app);
 
     int d = 20000100; // set precision
-    str = str.substr(0, d);
+    str = str.substr(0, d); // shorter substring of pi constant
 
     str = "0." + str;
 
@@ -25,10 +30,11 @@ int main() {
     char hx[] = "0123456789abcdef";
     mpf_t pi;
     mpf_init(pi);
-    mpf_set_str(pi, str.c_str(), 10);
+    mpf_set_str(pi, str.c_str(), 10); // convert string to mpf number
     
     str = "";
 
+    // iterate through each digit multiplying by 16 and storing integer value after each iteration
     for(int i=0; i<d; i++){
         mpf_t result;
         mpf_init(result);
